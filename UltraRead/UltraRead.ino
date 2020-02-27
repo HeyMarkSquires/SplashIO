@@ -35,7 +35,7 @@ void loop() {
   Serial.print(" ");
   ultra4();
   Serial.println("");
-  delay(2000);
+  delay(100);
 }
 
 void ultra1(){
