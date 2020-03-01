@@ -21,15 +21,14 @@ import functools
 
 class_names=['left', 'right' 'up', 'down', 'resting', 'swirling', 'drop', 'take']
 #Loading the dataset
-filename="training/data_train.csv"
-train = pd.read_csv(filename)
-train['Type']='Train'
+t="data.csv"
+df=pd.read_csv(t)
 
 #Defining the model
-model = Sequential()
-model.add(Dense(100, input_dim=11, activation="relu"))
-model.add(Dense(50, activation="relu"))
-model.add(Dense(1))
-model.summary()
-model.compile(loss= "mean_squared_error" , optimizer="adam", metrics=["mean_squared_error"])
-model.fit(X_train, y_train, epochs=10)
+#model = Sequential()
+#model.add(Dense(100, input_dim=11, activation="relu"))
+#model.add(Dense(50, activation="relu"))
+#model.add(Dense(1))
+#model.summary()
+#model.compile(loss= "mean_squared_error" , optimizer="adam", metrics=["mean_squared_error"])
+#model.fit(X_train, y_train, epochs=10)

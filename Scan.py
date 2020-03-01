@@ -22,6 +22,17 @@ print("Begin")
 val=ser.readline().decode("utf-8")
 state=np.zeros((20,4))
 count=0
+#Checking if data.csv already exists. If it doesn't, initialise the headers
+headers=["Type", "1Sen1", "2sen1", "3sen1", "4sen1",  "1Sen2", "2sen2", "3sen2", "4sen2",  "1Sen3", "2sen3", "3sen3", "4sen3",
+         "1Sen4", "2sen4", "3sen4", "4sen4",  "1Sen5", "2sen5", "3sen5", "4sen5",  "1Sen6", "2sen6", "3sen6", "4sen6",
+         "1Sen7", "2sen7", "3sen7", "4sen7",  "1Sen8", "2sen8", "3sen8", "4sen8",  "1Sen9", "2sen9", "3sen9", "4sen9",
+         "1Sen10", "2sen10", "3sen10", "4sen10",  "1Sen11", "2sen11", "3sen11", "4sen11",  "1Sen12", "2sen12", "3sen12", "4sen12",
+         "1Sen13", "2sen13", "3sen13", "4sen13",  "1Sen14", "2sen14", "3sen14", "4sen14",  "1Sen15", "2sen15", "3sen15", "4sen15",
+         "1Sen16", "2sen16", "3sen16", "4sen16",  "1Sen17", "2sen17", "3sen17", "4sen17",  "1Sen18", "2sen18", "3sen18", "4sen18",
+         "1Sen19", "2sen19", "3sen19", "4sen19",  "1Sen20", "2sen20", "3sen20", "4sen20"]
+with open('data.csv', 'a', newline='') as file:
+    wr=csv.writer(file, quoting=csv.QUOTE_ALL)
+    wr.writerow(headers)
 #Reading information from the sensors and generating a numpy array to determine
 #the state of the pool
 while True:
