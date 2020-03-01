@@ -22,8 +22,6 @@ print("Begin")
 val=ser.readline().decode("utf-8")
 state=np.zeros((20,4))
 count=0
-f=open('data.csv', 'w')
-writer = csv.writer(f)
 #Reading information from the sensors and generating a numpy array to determine
 #the state of the pool
 while True:
@@ -36,10 +34,15 @@ while True:
         count+=1
     else:
         g=state.flatten()
-        print(g)
         count=0
+        #Creating the array that will be written to the csv file
+        r=["Hello"]
+        for i in range(len(g)):
+            r.append(g[i])
         #Writing the file to a csv
-        print("Here")
-        savetxt('data.csv', g, newline=" ")
+        print(r)
+        with open('data.csv', 'a') as file:
+                  wr=csv.writer(file, quoting=csv.QUOTE_ALL)
+                  wr.writerow(r)
     sleep(.1)
     
