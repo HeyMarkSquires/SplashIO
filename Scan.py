@@ -41,7 +41,7 @@ while True:
             r.append(g[i])
         #Writing the file to a csv
         print(r)
-        with open('data.csv', 'a') as file:
+        with open('data.csv', 'a', newline='') as file:
                   wr=csv.writer(file, quoting=csv.QUOTE_ALL)
                   wr.writerow(r)
     sleep(.1)
