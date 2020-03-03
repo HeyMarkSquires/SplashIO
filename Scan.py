@@ -44,22 +44,25 @@ with open('data.csv', 'a', newline='') as file:
 while True:
     if kb.is_pressed('q'):
         print("Hello")
-    x=parser(val)
-    val=ser.readline().decode("utf-8")
-    state[count]=x
-    if count<19:    
-        count+=1
-    else:
-        g=state.flatten()
-        count=0
-        #Creating the array that will be written to the csv file
-        r=[1]
-        for i in range(len(g)):
-            r.append(g[i])
-        #Writing the file to a csv
-        print(r)
-        with open('data.csv', 'a', newline='') as file:
-                  wr=csv.writer(file, quoting=csv.QUOTE_ALL)
-                  wr.writerow(r)
-    sleep(.1)
+         x=parser(val)
+        val=ser.readline().decode("utf-8")
+        state[count]=x
+        if count<19:    
+            count+=1
+        else:
+            g=state.flatten()
+            count=0
+            #Creating the array that will be written to the csv file
+            newType=int(input("Action number: \n"))
+            print(newType)
+            r=[newType]
+            for i in range(len(g)):
+                r.append(g[i])
+            #Writing the file to a csv
+            print(r)
+            with open('data.csv', 'a', newline='') as file:
+                      wr=csv.writer(file, quoting=csv.QUOTE_ALL)
+                      wr.writerow(r)
+        sleep(.1)
+   
     
