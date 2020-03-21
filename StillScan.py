@@ -47,33 +47,26 @@ with open('data.csv', 'a', newline='') as file:
 #the state of the pool
 measuring=False
 while True:
-    if kb.is_pressed('/'):
-        measuring=True
-        while measuring==True:
-            print(count)
-            x=parser(val)
-            val=ser.readline().decode("utf-8")
-            state[count]=x
-            if count<19:
-                print(count)
-                count+=1
-            else:
-                g=state.flatten()
-                print("Loop complete")
-                count=0
-                #Creating the array that will be written to the csv file
-                #newType=int(input("Action number: \n"))
-                #print(newType)
-                r=[1]
-                for i in range(len(g)):
-                    r.append(g[i])
-                #Writing the file to a csv
-                print(r)
-                with open('data.csv', 'a', newline='') as file:
-                          wr=csv.writer(file, quoting=csv.QUOTE_ALL)
-                          wr.writerow(r)
-                measuring=False
-            sleep(.05)
+    print(count)
+    x=parser(val)
+    val=ser.readline().decode("utf-8")
+    state[count]=x
+    if count<19:
+        print(count)
+        count+=1
+    else:
+        g=state.flatten()
+        print("Loop complete")
+        count=0
+        #Creating the array that will be written to the csv file
+        r=[5]
+        for i in range(len(g)):
+            r.append(g[i])
+        #Writing the file to a csv
+        print(r)
+        with open('data.csv', 'a', newline='') as file:
+            wr=csv.writer(file, quoting=csv.QUOTE_ALL)
+            wr.writerow(r)
+    sleep(.05)
             
    
-    

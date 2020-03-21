@@ -8,6 +8,8 @@ from sklearn import preprocessing
 from sklearn.model_selection import train_test_split
 from keras.models import Sequential
 from keras.layers import Dense
+import matplotlib.pyplot as plt
+
 
 class_names=['left', 'right' 'up', 'down', 'resting', 'swirling', 'drop', 'take']
 col_names=["type", "1sen1", "2sen1", "3sen1", "4sen1",  "1Sen2", "2sen2", "3sen2", "4sen2",  "1sen3", "2sen3", "3sen3", "4sen3",
@@ -18,27 +20,29 @@ col_names=["type", "1sen1", "2sen1", "3sen1", "4sen1",  "1Sen2", "2sen2", "3sen2
          "1sen16", "2sen16", "3sen16", "4sen16",  "1sen17", "2sen17", "3sen17", "4sen17",  "1sen18", "2sen18", "3sen18", "4sen18",
          "1sen19", "2sen19", "3sen19", "4sen19",  "1sen20", "2sen20", "3sen20", "4sen20"]
 #Loading the dataset
-t="data.csv"
-df=pd.read_csv(t)
+filename="data.csv"
+df=pd.read_csv(filename)
 dataset=df.values
 #splitting the dataset into input features (x) and features we wish to predict(y)
-X=dataset[:,1:20]
-Y=dataset[:,0:1]
+inX=dataset[:,1:20]
+outY=dataset[:,0:1]
 #preprocessing the data
-min_max_scaler = preprocessing.MinMaxScaler()
-X_scale = min_max_scaler.fit_transform(X)
 
-X_train, X_val_and_test, Y_train, Y_val_and_test = train_test_split(X_scale, Y, test_size=0.3)
+X_train, X_val_and_test, Y_train, Y_val_and_test =train_test_split(inX, outY, test_size=0.3)
+
 X_val, X_test, Y_val, Y_test = train_test_split(X_val_and_test, Y_val_and_test, test_size=0.5)
 
 print(X_train.shape, X_val.shape, X_test.shape, Y_train.shape, Y_val.shape, Y_test.shape)
+print(X_test)
 
 #Defining the model
 model = Sequential()
+model.add(Dense(32, activation="relu", input_shape=(19,)))
 model.add(Dense(32, activation="relu"))
 model.add(Dense(32, activation="relu"))
 model.add(Dense(1, activation="sigmoid"))
 model.compile(optimizer = 'sgd', loss="binary_crossentropy", metrics=['accuracy'])
-hist = model.fit(X_train, Y_train, batch_size=32, epochs=100,
-                 validation_data=(X_val, Y_val))
-model.evaluate(X_test, Y_test)[1]
+hist = model.fit(X_train, Y_train, batch_size=32, epochs=100, validation_data=(X_val, Y_val))
+print(model.evaluate(X_test, Y_test))
+
+

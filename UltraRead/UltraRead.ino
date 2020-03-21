@@ -29,13 +29,16 @@ void setup() {
 void loop() {
   ultra1();
   Serial.print(" ");
+  delay(10);
   ultra2();
   Serial.print(" ");
+  delay(10);
   ultra3();
   Serial.print(" ");
+  delay(10);
   ultra4();
   Serial.println("");
-  delay(100);
+  delay(50);
 }
 
 void ultra1(){
