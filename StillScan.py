@@ -47,7 +47,6 @@ with open('data.csv', 'a', newline='') as file:
 #the state of the pool
 measuring=False
 while True:
-    print(count)
     x=parser(val)
     val=ser.readline().decode("utf-8")
     state[count]=x

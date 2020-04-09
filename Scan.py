@@ -18,9 +18,9 @@ def parser(data):
 
 
 #Checking if data.csv already exists. If it doesn't, initialise the headers
-headers=["type", "1sen1", "2sen1", "3sen1", "4sen1",  "1Sen2", "2sen2", "3sen2", "4sen2",  "1sen3", "2sen3", "3sen3", "4sen3",
-         "1sen4", "2sen4", "3sen4", "4sen4",  "1Sen5", "2sen5", "3sen5", "4sen5",  "1sen6", "2sen6", "3sen6", "4sen6",
-         "1sen7", "2sen7", "3sen7", "4sen7",  "1Sen8", "2sen8", "3sen8", "4sen8",  "1Sen9", "2sen9", "3sen9", "4sen9",
+headers=["type", "1sen1", "2sen1", "3sen1", "4sen1",  "1sen2", "2sen2", "3sen2", "4sen2",  "1sen3", "2sen3", "3sen3", "4sen3",
+         "1sen4", "2sen4", "3sen4", "4sen4",  "1sen5", "2sen5", "3sen5", "4sen5",  "1sen6", "2sen6", "3sen6", "4sen6",
+         "1sen7", "2sen7", "3sen7", "4sen7",  "1Sen8", "2sen8", "3sen8", "4sen8",  "1sen9", "2sen9", "3sen9", "4sen9",
          "1sen10", "2sen10", "3sen10", "4sen10",  "1sen11", "2sen11", "3sen11", "4sen11",  "1sen12", "2sen12", "3sen12", "4sen12",
          "1sen13", "2sen13", "3sen13", "4sen13",  "1sen14", "2sen14", "3sen14", "4sen14",  "1sen15", "2sen15", "3sen15", "4sen15",
          "1sen16", "2sen16", "3sen16", "4sen16",  "1sen17", "2sen17", "3sen17", "4sen17",  "1sen18", "2sen18", "3sen18", "4sen18",
@@ -50,7 +50,6 @@ while True:
     if kb.is_pressed('/'):
         measuring=True
         while measuring==True:
-            print(count)
             x=parser(val)
             val=ser.readline().decode("utf-8")
             state[count]=x
@@ -64,7 +63,7 @@ while True:
                 #Creating the array that will be written to the csv file
                 #newType=int(input("Action number: \n"))
                 #print(newType)
-                r=[1]
+                r=[2]
                 for i in range(len(g)):
                     r.append(g[i])
                 #Writing the file to a csv

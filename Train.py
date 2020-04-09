@@ -9,6 +9,7 @@ from sklearn.model_selection import train_test_split
 from keras.models import Sequential
 from keras.layers import Dense
 import matplotlib.pyplot as plt
+import pickle
 
 
 class_names=['left', 'right' 'up', 'down', 'resting', 'swirling', 'drop', 'take']
@@ -24,7 +25,7 @@ filename="data.csv"
 df=pd.read_csv(filename)
 dataset=df.values
 #splitting the dataset into input features (x) and features we wish to predict(y)
-inX=dataset[:,1:20]
+inX=dataset[:,1:81]
 outY=dataset[:,0:1]
 #preprocessing the data
 
@@ -32,17 +33,22 @@ X_train, X_val_and_test, Y_train, Y_val_and_test =train_test_split(inX, outY, te
 
 X_val, X_test, Y_val, Y_test = train_test_split(X_val_and_test, Y_val_and_test, test_size=0.5)
 
-print(X_train.shape, X_val.shape, X_test.shape, Y_train.shape, Y_val.shape, Y_test.shape)
-print(X_test)
+print(inX)
+print(outY)
 
 #Defining the model
 model = Sequential()
-model.add(Dense(32, activation="relu", input_shape=(19,)))
+model.add(Dense(32, activation="relu", input_dim=80))
 model.add(Dense(32, activation="relu"))
 model.add(Dense(32, activation="relu"))
 model.add(Dense(1, activation="sigmoid"))
-model.compile(optimizer = 'sgd', loss="binary_crossentropy", metrics=['accuracy'])
-hist = model.fit(X_train, Y_train, batch_size=32, epochs=100, validation_data=(X_val, Y_val))
-print(model.evaluate(X_test, Y_test))
+model.compile(loss='binary_crossentropy', optimizer='adam', metrics=['accuracy'])
+model.fit(inX, outY, epochs=50, batch_size=10)
+_, accuracy = model.evaluate(inX, outY, verbose=0)
+print(accuracy)
+print('Accuracy: %.2f' % (accuracy*100))
 
+# save the model to disk
+filename = 'finalized_model.sav'
+pickle.dump(model, open(filename, 'wb'))
 
