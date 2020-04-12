@@ -9,9 +9,6 @@ filename = 'finalized_model.sav'
 model = pickle.load(open(filename, 'rb'))
 pygame.font.init()
 
-#p=[[8.14,8.23,8.25,8.28,8.02,8.23,8.33,8.38,8.14,8.74,8.35,8.28,8.02,8.23,8.23,8.28,8.14,8.3,8.33,8.4,8.02,8.25,8.25,8.28,8.02,8.3,8.33,8.38,8.14,8.35,8.35,8.28,8.04,8.23,8.25,8.28,8.14,8.35,8.33,8.38,8.04,8.23,8.23,8.28,8.04,8.33,8.35,8.38,8.13,8.33,8.28,8.28,8.04,8.21,8.23,8.28,8.14,8.33,8.35,8.38,8.04,8.23,8.25,8.28,8.02,8.33,8.35,8.4,8.13,8.33,8.23,8.28,8.04,8.23,8.23,8.33,8.14,8.33,8.33,8.38]]
-#r=np.array(p)
-#print(model.predict(r))
 
 s_width = 800
 s_height = 700
@@ -275,6 +272,7 @@ def parser(data):
     return result
 
 def main(win):
+    state=np.zeros((20,4))
     global grid
     locked_positions = {}
     grid = createGrid(locked_positions)
@@ -287,7 +285,6 @@ def main(win):
     count=0
     
     while run:
-        state=[]
         prediction=5
         while count<20:
             val=ser.readline().decode("utf-8")
@@ -297,11 +294,11 @@ def main(win):
                 count+=1
             else:
                 g=state.flatten()
-                v=[g]
+                c=np.array([g])
+                print(c)
                 count=0
-                print(g)
-                print(v)
-                prediction=model.predict(v)[0][0]
+                prediction=model.predict(c)[0][0]
+                print(np.argmax(prediction))
         fall_speed = 0.8
         grid = createGrid(locked_positions)
         fall_time += clock.get_rawtime()
@@ -317,33 +314,30 @@ def main(win):
                 run = False
                 pygame.display.quit()
                 quit()
-            if event.type == pygame.KEYDOWN:
-
-                #Moving the shape to the left
-                if prediction == 3:
-                    current_piece.x -= 1
-                    if not valid_space(current_piece, grid):
-                        current_piece.x += 1
-
-                #Moving the shape to the right
-                elif prediction == 4:
+            #Moving the shape to the left
+            if prediction == 3:
+                current_piece.x -= 1
+                if not valid_space(current_piece, grid):
                     current_piece.x += 1
-                    if not valid_space(current_piece, grid):
-                        current_piece.x -= 1
 
-                #Rotating shape
-                elif prediction == 1:
-                    current_piece.angle = current_piece.angle + 1 % len(current_piece.shape)
-                    if not valid_space(current_piece, grid):
-                        current_piece.rotation = current_piece.angle - 1 % len(current_piece.shape)
-
-                #Moving the shape down
-                if prediction == 2:
-                    current_piece.y += 1
-                    if not valid_space(current_piece, grid):
-                        current_piece.y -= 1
-                else:
-                    
+            #Moving the shape to the right
+            elif prediction == 4:
+                current_piece.x += 1
+                if not valid_space(current_piece, grid):
+                    current_piece.x -= 1
+            #Rotating shape
+            elif prediction == 1:
+                current_piece.angle = current_piece.angle + 1 % len(current_piece.shape)
+                if not valid_space(current_piece, grid):
+                    current_piece.rotation = current_piece.angle - 1 % len(current_piece.shape)
+            #Moving the shape down
+            if prediction == 2:
+                current_piece.y += 1
+                if not valid_space(current_piece, grid):
+                    current_piece.y -= 1
+            #No action given
+            else:
+                pass      
         shape_pos = convert_shape_format(current_piece)
         for i in range(len(shape_pos)):
             x, y = shape_pos[i]
