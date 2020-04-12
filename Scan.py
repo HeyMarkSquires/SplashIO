@@ -34,7 +34,7 @@ except IOError:
         wr=csv.writer(file, quoting=csv.QUOTE_ALL)
         wr.writerow(headers)
 #Configuring serial connection
-ser = serial.Serial('COM9', 9600)
+ser = serial.Serial('COM16', 9600)
 print("Begin")
 val=ser.readline().decode("utf-8")
 state=np.zeros((20,4))

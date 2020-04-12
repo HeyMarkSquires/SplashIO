@@ -21,7 +21,7 @@ block_size = 30
 g_width=10
 g_height=20
 
-ser = serial.Serial('COM9', 9600)
+ser = serial.Serial('COM16', 9600)
 
 top_left_x = (s_width - play_width) // 2
 top_left_y = s_height - play_height
