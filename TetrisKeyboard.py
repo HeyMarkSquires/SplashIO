@@ -3,10 +3,7 @@ import random
 import serial
 from time import sleep
 import numpy as np
-import pickle
 
-filename = 'finalized_model.sav'
-model = pickle.load(open(filename, 'rb'))
 pygame.font.init()
 
 
@@ -17,8 +14,6 @@ play_height = 600
 block_size = 30
 g_width=10
 g_height=20
-
-ser = serial.Serial('COM16', 9600)
 
 top_left_x = (s_width - play_width) // 2
 top_left_y = s_height - play_height
@@ -282,23 +277,9 @@ def main(win):
     next_piece = get_shape()
     clock = pygame.time.Clock()
     fall_time = 0
-    count=0
     
     while run:
-        prediction=5
-        while count<20:
-            val=ser.readline().decode("utf-8")
-            x=parser(val)
-            state[count]=x
-            if count<19:
-                count+=1
-            else:
-                g=state.flatten()
-                c=np.array([g])
-                print(c)
-                count=0
-                prediction=model.predict(c)[0][0]
-                print(np.argmax(prediction))
+        
         fall_speed = 0.8
         grid = createGrid(locked_positions)
         fall_time += clock.get_rawtime()
@@ -309,35 +290,39 @@ def main(win):
             if not (valid_space(current_piece, grid)) and current_piece.y > 0:
                 current_piece.y -= 1
                 change_piece = True
+                
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 run = False
                 pygame.display.quit()
                 quit()
-            #Moving the shape to the left
-            if prediction == 3:
-                current_piece.x -= 1
-                if not valid_space(current_piece, grid):
-                    current_piece.x += 1
+            if event.type == pygame.KEYDOWN:
+                print("In")
+                #Moving the shape to the left
+                if event.key == pygame.K_LEFT:
+                    print("Left")
+                    current_piece.x-=1
+                    if not valid_space(current_piece, grid):
+                        current_piece.x += 1
 
-            #Moving the shape to the right
-            elif prediction == 4:
-                current_piece.x += 1
-                if not valid_space(current_piece, grid):
-                    current_piece.x -= 1
-            #Rotating shape
-            elif prediction == 1:
-                current_piece.angle = current_piece.angle + 1 % len(current_piece.shape)
-                if not valid_space(current_piece, grid):
-                    current_piece.rotation = current_piece.angle - 1 % len(current_piece.shape)
-            #Moving the shape down
-            if prediction == 2:
-                current_piece.y += 1
-                if not valid_space(current_piece, grid):
-                    current_piece.y -= 1
-            #No action given
-            else:
-                pass      
+                #Moving the shape to the right
+                elif event.key == pygame.K_RIGHT:
+                    print("Right")
+                    current_piece.x += 1
+                    if not valid_space(current_piece, grid):
+                        current_piece.x -= 1
+                #Rotating shape
+                elif event.key == pygame.K_UP:
+                    print("Up")
+                    current_piece.angle = current_piece.angle + 1 % len(current_piece.shape)
+                    if not valid_space(current_piece, grid):
+                        current_piece.rotation = current_piece.angle - 1 % len(current_piece.shape)
+                #Moving the shape down
+                elif event.key == pygame.K_DOWN:
+                    print("Down")
+                    current_piece.y += 1
+                    if not valid_space(current_piece, grid):
+                        current_piece.y -= 1     
         shape_pos = convert_shape_format(current_piece)
         for i in range(len(shape_pos)):
             x, y = shape_pos[i]
@@ -365,8 +350,6 @@ def main(win):
 def main_menu():
     run = True
     while run:
-        val=ser.readline().decode("utf-8")
-        state=np.zeros((20,4))
         win.fill((0,0,0))
         draw_text_middle(win, 'Press Any Key To Play', 60, (255,255,255))
         pygame.display.update()

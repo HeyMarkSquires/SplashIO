@@ -63,7 +63,7 @@ while True:
                 #Creating the array that will be written to the csv file
                 #newType=int(input("Action number: \n"))
                 #print(newType)
-                r=[4]
+                r=[3]
                 for i in range(len(g)):
                     r.append(g[i])
                 #Writing the file to a csv
