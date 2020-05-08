@@ -3,7 +3,7 @@ from time import sleep
 import numpy as np
 import pickle
 
-filename = 'finalized_model.sav'
+filename = 'finalised_model.sav'
 model = pickle.load(open(filename, 'rb'))
 ser = serial.Serial('COM16', 9600)
 

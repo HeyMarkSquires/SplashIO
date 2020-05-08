@@ -36,6 +36,7 @@ except IOError:
 #Configuring serial connection
 ser = serial.Serial('COM16', 9600)
 print("Begin")
+ser.readline().decode("utf-8")
 val=ser.readline().decode("utf-8")
 state=np.zeros((20,4))
 count=0

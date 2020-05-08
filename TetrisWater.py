@@ -19,7 +19,7 @@ g_width=10
 g_height=20
 
 ser = serial.Serial('COM16', 9600)
-
+ser.readline().decode("utf-8")
 top_left_x = (s_width - play_width) // 2
 top_left_y = s_height - play_height
 
@@ -276,11 +276,9 @@ def readInput():
     prediction=5
     count=0
     for i in range(20):
-        print(i)
         val=ser.readline().decode("utf-8")
         x=parser(val)
         state[count]=x
-        print(count)
         if count<19:
             count+=1
         else:
@@ -288,13 +286,10 @@ def readInput():
             c=np.array([g])
             print(c)
             p=model.predict(c)[0][0]
-            print(np.argmax(p))
-            print("predict")
             prediction=np.argmax(p)
     print("Prediction", prediction)
             
 def main(win):
-    print("Here")
     global grid
     locked_positions = {}
     grid = createGrid(locked_positions)
