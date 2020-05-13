@@ -25,7 +25,7 @@ difference(){
       cube([5,130,5]);
     }
     translate([18,55,5]){
-   color("red")
+   xcolor("red")
    cube([20,20,4]);  
 }
 }

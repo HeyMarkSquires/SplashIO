@@ -4,12 +4,12 @@ import serial
 from time import sleep
 import numpy as np
 import pickle
-
+#Importing the model
 filename = 'finalized_model.sav'
 model = pickle.load(open(filename, 'rb'))
 pygame.font.init()
 
-
+#Configuring the size of the window
 s_width = 800
 s_height = 700
 play_width = 300  
@@ -127,6 +127,7 @@ T = [['.....',
       '..0..',
       '.....']]
 
+#Setting up the pieces
 shapeList = [S, Z, I, O, J, L, T]
 darkRed=(153, 0, 0)
 moave=(204, 0, 153)
@@ -137,6 +138,7 @@ orange=(255, 153, 51)
 greenBlue=(0, 204, 102)
 shapeCols = [darkRed, moave, darkGreen, darkBlue, sandy, orange, greenBlue]
 
+#The piece class which holds the data on the shape, position, angle, and colour of the piece
 class Piece(object):  
     def __init__(self, x, y, shape):
         self.x = x
@@ -145,7 +147,7 @@ class Piece(object):
         self.colour = shapeCols[shapeList.index(shape)]
         self.angle = 0
 
-
+#Initialising the grid
 def createGrid(locked_pos={}):
     grid = [[(0,0,0) for x in range(g_width)] for x in range(g_height)]
 
@@ -156,7 +158,7 @@ def createGrid(locked_pos={}):
                 grid[i][j] = c
     return grid
 
-
+#Return information about the shape
 def get_shape():
     global shapeList, shapeCols
     return Piece(5, 0, random.choice(shapeList))
@@ -284,10 +286,10 @@ def readInput():
         else:
             g=state.flatten()
             c=np.array([g])
-            print(c)
-            p=model.predict(c)[0][0]
+            p=model.predict(c)
+            print(p)
             prediction=np.argmax(p)
-    print("Prediction", prediction)
+    return prediction
             
 def main(win):
     global grid
@@ -302,7 +304,7 @@ def main(win):
     
     
     while run:
-        readInput()
+        prediction=readInput()
         fall_speed = 0.8
         grid = createGrid(locked_positions)
         fall_time += clock.get_rawtime()
@@ -314,32 +316,39 @@ def main(win):
                 current_piece.y -= 1
                 change_piece = True
         for event in pygame.event.get():
+            
             if event.type == pygame.QUIT:
                 run = False
                 pygame.display.quit()
                 quit()
-            #Moving the shape to the left
-            #if prediction == 3:
-             #   current_piece.x -= 1
-             #   if not valid_space(current_piece, grid):
-              #      current_piece.x += 1
+            
+        print(prediction)
+        #Moving the shape to the left
+        if prediction == 3:
+            print("Left")
+            current_piece.x -= 1
+            if not valid_space(current_piece, grid):
+                current_piece.x += 1
 
-            #Moving the shape to the right
-           # elif prediction == 4:
-           #     current_piece.x += 1
-           #     if not valid_space(current_piece, grid):
-           #         current_piece.x -= 1
-            #Rotating shape
-           # elif prediction == 1:
-           #     current_piece.angle = current_piece.angle + 1 % len(current_piece.shape)
-           #     if not valid_space(current_piece, grid):
-           #         current_piece.rotation = current_piece.angle - 1 % len(current_piece.shape)
-            #Moving the shape down
-          #  if prediction == 2:
-           #     current_piece.y += 1
-           #     if not valid_space(current_piece, grid):
-            #        current_piece.y -= 1
-            #No action given     
+        #Moving the shape to the right
+        elif prediction == 4:
+            print("Right")
+            current_piece.x += 1
+            if not valid_space(current_piece, grid):
+                current_piece.x -= 1
+        #Rotating shape
+        elif prediction == 1:
+            print("Rotate")
+            current_piece.angle = current_piece.angle + 1 % len(current_piece.shape)
+            if not valid_space(current_piece, grid):
+                current_piece.rotation = current_piece.angle - 1 % len(current_piece.shape)
+        #Moving the shape down
+        if prediction == 2:
+            print("Down")
+            current_piece.y += 1
+            if not valid_space(current_piece, grid):
+                current_piece.y -= 1
+        #No action given
         shape_pos = convert_shape_format(current_piece)
         for i in range(len(shape_pos)):
             x, y = shape_pos[i]
